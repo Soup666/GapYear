@@ -1,4 +1,8 @@
 import pygame as pg
+from .pipe import Pipe
+from .player import Player
+from .prepare import SPRITE_GROUP, WIN, BACKGROUND_COLOR, HEIGHT, PIPE_GROUP
+import random
 
 TIME_PER_UPDATE = 16.0  #Milliseconds
 
@@ -10,6 +14,19 @@ class Control(object):
 		self.clock = pg.time.Clock()
 		self.fps = 60.0
 		self.fps_visible = True
+
+		self.player = Player()
+		self.pipes = []
+		self.score = 0
+
+		self.spawn_objects()
+		
+	def spawn_objects(self):
+		# Player
+
+		SPRITE_GROUP.add(self.pipes)
+		SPRITE_GROUP.add(self.player)
+
 
 	def main(self):
 		lag = 0.0
@@ -24,8 +41,26 @@ class Control(object):
 	def update(self):
 		self.now = pg.time.get_ticks()
 
+		self.player.update()
+
+		for i in range(len(self.pipes)-1):
+			self.pipes[i].update()
+
+			if self.pipes[i].rect.x < -50:
+				SPRITE_GROUP.remove(self.pipes[i])
+				self.pipes.pop(i)
+
+		col = pg.sprite.spritecollide(self.player, PIPE_GROUP, True)
+		if len(col) > 0:
+			print(col)
+			self.done = True
+			print("Failed!")
+
 	def draw(self, interpolate):
+		#WIN.fill(BACKGROUND_COLOR)
 		self.show_fps()
+
+		SPRITE_GROUP.draw(WIN)
 		pg.display.update()
 
 	def show_fps(self):
@@ -45,3 +80,18 @@ class Control(object):
 		for event in pg.event.get():
 			if event.type == pg.QUIT:
 				self.done = True
+			if event.type == pg.KEYDOWN:
+				self.player.acceleration = -15
+				#self.player.rect.y -= 120
+			if event.type == pg.USEREVENT:
+				self.score += 1
+				print(f"Score: {self.score}")
+				d = random.randint(0,100)
+				if d > 50:
+					dir = 1
+				else:
+					dir = -1
+				p = Pipe(random.randint(100,HEIGHT/2), dir)
+				self.pipes.append(p)
+				SPRITE_GROUP.add(p)
+				PIPE_GROUP.add(p)

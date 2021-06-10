@@ -1,20 +1,28 @@
 import pygame as pg
+import random
 import os
 
 pg.init()
 
-SCREEN_SIZE = (600, 600)
+WIDTH, HEIGHT = 600, 600
+
+SCREEN_SIZE = (WIDTH, HEIGHT)
+PLAY_RECT = pg.Rect(0,0,WIDTH,HEIGHT)
 CAPTION = "Flappy Bird"
-COLOR_KEY = (255, 0, 255)
-BACKGROUND_COLOR = (30, 40, 50)
+BACKGROUND_COLOR = (255,255,255)
 SCREEN_RECT = pg.Rect((0,0), SCREEN_SIZE)
 _FONT_PATH = os.path.join("assets", "fonts","Caramel Sweets.ttf")
 BIG_FONT = pg.font.Font(_FONT_PATH, 100)
 
-pg.display.set_caption(CAPTION)
-_screen = pg.display.set_mode(SCREEN_SIZE)
+pg.time.set_timer(pg.USEREVENT, random.randrange(1000, 1500))
 
-_screen.fill(BACKGROUND_COLOR)
-_render = BIG_FONT.render("LOADING...", 0, pg.Color("white"))
-_screen.blit(_render, _render.get_rect(center=SCREEN_RECT.center))
+pg.display.set_caption(CAPTION)
+WIN = pg.display.set_mode(SCREEN_SIZE)
+
+WIN.fill(BACKGROUND_COLOR)
 pg.display.update()
+
+SPRITE_GROUP = pg.sprite.Group()
+PIPE_GROUP = pg.sprite.Group()
+
+GRAVITY = 0.98
