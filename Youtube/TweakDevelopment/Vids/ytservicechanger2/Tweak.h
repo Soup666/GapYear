@@ -1,0 +1,2 @@
+NSString* YTStatusLabel;
+BOOL Enabled;

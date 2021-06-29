@@ -1,0 +1,2 @@
+NSString* StatusLabel;
+BOOL Enabled;

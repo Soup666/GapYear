@@ -1,0 +1,10 @@
+Package: com.soup.ytservicechanger
+Name: YTServiceChanger
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Sam Laister
+Author: Sam Laister
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
+Version: 0.0.1-5+debug
+Installed-Size: 344
